@@ -31,7 +31,7 @@
 
         $('form#send_room').submit(function(event) {
           if ($('#room_data').val() != '')
-            $.ajax('url' + '/send', {
+            $.ajax('https://chatincloud.herokuapp.com/send', {
                 method: 'POST',
                 data: JSON.stringify({'message': note}),
                 contentType : 'application/json'
