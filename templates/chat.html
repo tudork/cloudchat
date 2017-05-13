@@ -33,7 +33,7 @@
           if ($('#room_data').val() != '')
             $.ajax('https://chatincloud.herokuapp.com/send', {
                 method: 'POST',
-                data: JSON.stringify({'message': note}),
+                data: JSON.stringify({'message': 'mesaj'}),
                 contentType : 'application/json'
 
             });
