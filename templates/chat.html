@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <link rel="icon" type="img/ico" href="{{ url_for('static',filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/reset.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}" />
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+    $(document).ready(function() {
+
+        var reader  = new FileReader();
+        function loadFile() {
+
+           var file    = document.querySelector('input[type=file]').files[0];
+           var filename = document.querySelector('input[type=file]').value.replace(/^.*[\\\/]/, '');
+
+        }
+
+        var source = new EventSource("{{ url_for('sse.stream') }}");
+        source.addEventListener('message', function(event) {
+          var data = JSON.parse(event.data);
+          $('#chatbox').append('<span class = "username">' + data.user + '</span> : '
+               + '<span class = "message">' + data.message + '</span><br>');
+          alert("The server says " + data.message);
+        }, false);
+
+
+
+        $('form#send_room').submit(function(event) {
+          if ($('#room_data').val() != '')
+            $.ajax('url' + '/send', {
+                method: 'POST',
+                data: JSON.stringify({'message': note}),
+                contentType : 'application/json'
+
+            });
+            $("#send_room")[0].reset();
+
+            return false;
+          });
+
+
+        source.addEventListener('error', function(event) {
+          alert("Failed to connect to event stream. Is Redis running?");
+        }, false);
+
+    });
+
+
+    </script>
+</head>
+<body>
+
+
+  <div id="chatbox">
+
+  </div>
+  <div id="textbox">
+    <form id="send_room" method="POST" action='#'>
+
+         <input type="text" name="room_data" id="room_data" placeholder="Message" autocomplete="off">
+
+         <input type="submit" value="Send">
+         <input  type="file"/>
+     </form>
+  </div>
+
+</body>
+</html>
