@@ -21,8 +21,9 @@
 
         var source = new EventSource("{{ url_for('sse.stream') }}");
         source.addEventListener('message', function(event) {
+        console.log('ceva');
           var data = JSON.parse(event.data);
-          $('#chatbox').append('<span class = "username">' + data.user + '</span> : '
+          $('#chatbox').append('<span class = "username">' + data.sender + '</span> : '
                + '<span class = "message">' + data.message + '</span><br>');
           alert("The server says " + data.message);
         }, false);
@@ -31,12 +32,14 @@
 
         $('form#send_room').submit(function(event) {
           if ($('#room_data').val() != '')
+          {console.log('altceva');
             $.ajax('https://chatincloud.herokuapp.com/send', {
                 method: 'POST',
-                data: JSON.stringify({'message': 'mesaj'}),
+                data: JSON.stringify({'sender':'tudor',
+                                        'message': 'mesaj'}),
                 contentType : 'application/json'
 
-            });
+            });}
             $("#send_room")[0].reset();
 
             return false;
