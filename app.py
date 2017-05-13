@@ -11,6 +11,7 @@ def index():
 
 @app.route('/send', methods=['POST'])
 def publish_hello():
+    print(request.data['message'])
     sse.publish({"sender": request.data["sender"],
                 "message": request.data['message']}, type='message')
     return "Message sent!"
