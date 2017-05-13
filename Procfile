@@ -1,1 +1,1 @@
-web: gunicorn sse:app --worker-class gevent app:app
+web: gunicorn --worker-class gevent app:app
